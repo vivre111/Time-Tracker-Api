@@ -27,7 +27,7 @@ This is the Backend Counterpart of https://github.com/vivre111/Time-Tracker
 to run frontend on docker:
 
 ```bash
-git clone https://yourrepositoryurl.com
+git clone https://github.com/vivre111/Time-Tracker-API
 cd Time-Tracker-API
 docker compose up
 ```
@@ -39,7 +39,7 @@ If this happen, Stop both Containers, Start the MySQL Container First, when it i
 to run locally:
 
 ```bash
-git clone https://yourrepositoryurl.com
+git clone https://github.com/vivre111/Time-Tracker
 cd Time-Tracker
 ```
 Then you need to modify ormconfig.json, making it connect to your local database.
