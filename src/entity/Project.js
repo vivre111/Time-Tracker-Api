@@ -10,7 +10,9 @@ const ProjectSchema = new EntitySchema({
       generated: true,
     },
     name: {
+      // project name needs to be unique
       type: "varchar",
+      unique: true,
     },
     description: {
       type: "varchar",

@@ -8,6 +8,22 @@ import authenticateToken from "../middleware/authenticateToken.js";
 // TODO: put all JWT_SECRET in .env
 var JWT_SECRET = "your_jwt_secret";
 
+export const formatProjectData = (timeEntryArr) => {
+  const timeEntryObj = lodash.groupBy(timeEntryArr, (ele) => ele.project.name);
+  const projectData = Object.values(timeEntryObj).map((projectTimeEntryArr) => {
+    const project = projectTimeEntryArr[0].project;
+    const totalDurationHours = projectTimeEntryArr.reduce((acc, cur) => {
+      return acc + parseInt(cur.durationInHours);
+    }, 0);
+    return {
+      ...project,
+      totalDurationHours,
+      timeEntries: projectTimeEntryArr,
+    };
+  });
+  return projectData;
+};
+
 export function setupUserRoutes(app) {
   const userRepository = getConnection().getRepository(User);
 
@@ -59,34 +75,12 @@ export function setupUserRoutes(app) {
     }
   });
 
-  const formatProjectData = (timeEntryArr) => {
-    const timeEntryObj = lodash.groupBy(
-      timeEntryArr,
-      (ele) => ele.project.name
-    );
-    const projectData = Object.values(timeEntryObj).map(
-      (projectTimeEntryArr) => {
-        const project = projectTimeEntryArr[0].project;
-        const totalDurationHours = projectTimeEntryArr.reduce((acc, cur) => {
-          return acc + parseInt(cur.durationInHours);
-        }, 0);
-        return {
-          ...project,
-          totalDurationHours,
-          timeEntries: projectTimeEntryArr,
-        };
-      }
-    );
-    return projectData;
-  };
-
   // Track Project
   app.get("/api/user/projectData", authenticateToken, async (req, res) => {
-    const userId = req.user.userId;
-    //if (!userId) {
-    //  res.status(500).json({ message: "Failed to retrieve Users" });
-    //}
-    console.log(req.user);
+    const userId = req.user?.userId;
+    if (!userId) {
+      res.status(500).json({ message: "Failed to retrieve User ID" });
+    }
 
     try {
       const rawUserProjectData = await userRepository

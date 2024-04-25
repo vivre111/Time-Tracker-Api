@@ -9,7 +9,7 @@ export default function authenticateToken(req, res, next) {
   var JWT_SECRET = "your_jwt_secret";
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
+    if (err) return res.sendStatus(401);
     req.user = user;
     next();
   });

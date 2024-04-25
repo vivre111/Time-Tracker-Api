@@ -1,5 +1,7 @@
 import { EntitySchema } from "typeorm/index.js";
 
+// Time Entry manages the ManyToMany Relationship between Projects and Users
+// It also stands for a block of time for a User dedicated to a Project.
 const TimeEntrySchema = new EntitySchema({
   name: "TimeEntry",
   tableName: "time_entries",
@@ -16,8 +18,10 @@ const TimeEntrySchema = new EntitySchema({
       type: "timestamp",
       default: () => "CURRENT_TIMESTAMP",
     },
+    // assumption: we're tracking project status weekly, so 'endAt', although not defined,
+    // is implicit end of the week that the project started
     durationInHours: {
-      type: "decimal",
+      type: "int",
     },
   },
   relations: {

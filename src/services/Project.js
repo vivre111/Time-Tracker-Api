@@ -2,9 +2,6 @@ import Project from "../entity/Project.js";
 import { getConnection } from "typeorm/globals.js";
 import authenticateToken from "../middleware/authenticateToken.js";
 
-// TODO: put all JWT_SECRET in .env
-var JWT_SECRET = "your_jwt_secret";
-
 export function setupProjectRoutes(app) {
   const projectRepository = getConnection().getRepository(Project);
 
@@ -19,10 +16,18 @@ export function setupProjectRoutes(app) {
       }
 
       // Create a new project instance
+      const existingProject = await projectRepository.findOne({
+        where: { name },
+      });
+      if (existingProject) {
+        return res
+          .status(500)
+          .json({ message: "Found duplicated Project names" });
+      }
       const newProject = projectRepository.create({
         name,
         description,
-        createdBy: req.user.id,
+        createdBy: req.user.userId,
       });
       const savedProject = await projectRepository.save(newProject);
 
@@ -53,6 +58,4 @@ export function setupProjectRoutes(app) {
       res.status(500).json({ message: "Failed to retrieve projects" });
     }
   });
-
-  
 }

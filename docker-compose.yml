@@ -2,7 +2,7 @@ version: "3.8"
 services:
   app:
     build:
-      context: . # Add this to specify the directory containing the Dockerfile and your application files
+      context: . 
       dockerfile: Dockerfile
     container_name: backend_app
     ports:
@@ -21,10 +21,10 @@ services:
     image: mysql:5.7.43
     command: --explicit_defaults_for_timestamp=1 --ssl-cipher=TLSv1.2
     environment:
-      MYSQL_ROOT_PASSWORD: 1234 # Replace with a strong password
-      MYSQL_DATABASE: time-tracker # Optional: Specify a database to create
-      MYSQL_USER: austin # Optional: Specify a user to create
-      MYSQL_PASSWORD: 1234 # Replace with a strong password for your_user
+      MYSQL_ROOT_PASSWORD: 1234 
+      MYSQL_DATABASE: time-tracker 
+      MYSQL_USER: austin 
+      MYSQL_PASSWORD: 1234 
     ports:
       - "3308:3306"
     expose:
