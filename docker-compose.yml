@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: . # Add this to specify the directory containing the Dockerfile and your application files
+      dockerfile: Dockerfile
+    container_name: backend_app
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    volumes:
+      - .:/app # Ensure local changes are reflected in the container
+      - /app/node_modules # Keep node_modules in the container, not affected by the host
+    working_dir: /app
+    command: yarn start
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: mysql:5.7.43
+    command: --explicit_defaults_for_timestamp=1 --ssl-cipher=TLSv1.2
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234 # Replace with a strong password
+      MYSQL_DATABASE: time-tracker # Optional: Specify a database to create
+      MYSQL_USER: austin # Optional: Specify a user to create
+      MYSQL_PASSWORD: 1234 # Replace with a strong password for your_user
+    ports:
+      - "3308:3306"
+    expose:
+      - "3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+
+volumes:
+  db_data:
+    driver: local

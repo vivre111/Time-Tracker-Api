@@ -1,16 +1,13 @@
 import { EntitySchema } from "typeorm/index.js";
 
-const TaskSchema = new EntitySchema({
-  name: "Task",
-  tableName: "tasks",
+const TimeEntrySchema = new EntitySchema({
+  name: "TimeEntry",
+  tableName: "time_entries",
   columns: {
     id: {
       primary: true,
       type: "int",
       generated: true,
-    },
-    name: {
-      type: "varchar",
     },
     description: {
       type: "varchar",
@@ -37,4 +34,4 @@ const TaskSchema = new EntitySchema({
   },
 });
 
-export default TaskSchema;
+export default TimeEntrySchema;

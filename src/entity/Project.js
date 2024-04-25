@@ -25,6 +25,10 @@ const ProjectSchema = new EntitySchema({
       type: "many-to-one",
       target: "User",
     },
+    timeEntry: {
+      type: "one-to-many",
+      target: "TimeEntry",
+    },
   },
 });
 
